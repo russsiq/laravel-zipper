@@ -51,23 +51,44 @@
 ```php
 use Russsiq\Zipper\Facades\Zipper;
 
-// Открытие существующего архива в формате `*.zip`.
-$zipper = Zipper::open(string $filename);
+// Полный путь к создаваемому архиву.
+$filename = \storage_path('/tmp/new-ziparchive.zip');
 
-// code ...
+// Класс-обертка выбросит исключение,
+// при попытки перезаписи существующего файла.
+if (!\file_exists($filename)) {
+    // Создание нового архива в формате `*.zip`.
+    $zipper = Zipper::create($filename);
 
-$zipper->close();
+    // Добавление нового файла в архив из содержимого строки.
+    $zipper->addFromString('new-file.txt', 'dummy contents');
+
+    // Закрытие архива для принятия внесенных изменений.
+    $zipper->close();
+}
 ```
 
 ```php
 use Russsiq\Zipper\Facades\Zipper;
 
-// Создание нового архива в формате `*.zip`.
-$zipper = Zipper::create(string $filename);
+// Полный путь к открываемому архиву.
+$filename = \storage_path('/tmp/new-ziparchive.zip');
 
-// code ...
+// Полный путь назначения для извлечения содержимого архива.
+$destination = \storage_path('/tmp/extracted');
 
-$zipper->close();
+// Класс-обертка выбросит исключение,
+// при попытки открытия несуществующего файла архива.
+if (!\file_exists($filename)) {
+    // Открытие существующего архива в формате `*.zip`.
+    $zipper = Zipper::open($filename);
+
+    // Извлечение всего содержимого из файла архива.
+    $zipper->extractTo($destination);
+
+    // Закрытие архива для принятия внесенных изменений.
+    $zipper->close();
+}
 ```
 
 #### Методы
