@@ -72,7 +72,7 @@ if (!\file_exists($filename)) {
 use Russsiq\Zipper\Facades\Zipper;
 
 // Полный путь к открываемому архиву.
-$filename = \storage_path('/tmp/new-ziparchive.zip');
+$filename = \storage_path('/tmp/exists-ziparchive.zip');
 
 // Полный путь назначения для извлечения содержимого архива.
 $destination = \storage_path('/tmp/extracted');
