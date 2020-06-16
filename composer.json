@@ -1,0 +1,50 @@
+{
+    "name": "russsiq/laravel-zipper",
+    "description": "Класс-обертка для архиватора ZipArchive в Laravel 7.x.",
+    "keywords": ["laravel", "zipper", "zip-archive", "zip-wrapper"],
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://github.com/russsiq/laravel-zipper",
+    "support": {
+        "issues": "https://github.com/russsiq/laravel-zipper/issues",
+        "source": "https://github.com/russsiq/laravel-zipper"
+    },
+    "authors": [{
+        "name": "Рустам Гимранов",
+        "email": "rustam_gimranov@mail.ru",
+        "homepage": "https://github.com/russsiq",
+        "role": "Developer"
+    }],
+    "require": {
+        "php": ">=7.2.5",
+        "ext-zip": "*",
+        "illuminate/support": "7.*",
+        "illuminate/filesystem": "7.*"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.3.1",
+        "phpunit/phpunit": "^9.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Russsiq\\Zipper\\": "src/app/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Russsiq\\Zipper\\ZipperServiceProvider"
+            ],
+            "aliases": {
+                "Zipper": "Russsiq\\Zipper\\Facades\\Zipper"
+            }
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-win7": "vendor\\bin\\phpunit",
+        "testdox": "vendor\\bin\\phpunit --testdox-html tests/testdox.html"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
