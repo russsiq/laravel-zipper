@@ -79,7 +79,7 @@ $destination = \storage_path('/tmp/extracted');
 
 // Класс-обертка выбросит исключение,
 // при попытки открытия несуществующего файла архива.
-if (!\file_exists($filename)) {
+if (\file_exists($filename)) {
     // Открытие существующего архива в формате `*.zip`.
     $zipper = Zipper::open($filename);
 
