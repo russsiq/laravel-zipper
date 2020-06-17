@@ -41,24 +41,6 @@ class ZipperTest extends TestCase
     private const DUMMY_FILE = self::DUMMY_DIR.'/new-empty-file.zip';
 
     /**
-     * Экземпляр класса по работе с файловой системой.
-     * @var Filesystem
-     */
-    private $filesystem;
-
-    /**
-     * Экземпляр класса по работе с архивами.
-     * @var ZipArchive
-     */
-    private $ziparchive;
-
-    /**
-     * Экземпляр Класса-обертки для архиватора ZipArchive.
-     * @var Zipper
-     */
-    private $zipper;
-
-    /**
      * Этот метод вызывается перед запуском
      * первого теста этого класса тестирования.
      * @return void
@@ -89,14 +71,20 @@ class ZipperTest extends TestCase
 
         $this->assertDirectoryExists(self::DUMMY_DIR);
         $this->assertDirectoryIsWritable(self::DUMMY_DIR);
+    }
 
-        $this->filesystem = Mockery::mock(new Filesystem);
-        $this->ziparchive = new ZipArchive;
+    /**
+     * Инициализация нового экземпляра Класса-обертки для архиватора `ZipArchive`.
+     * @param  Filesystem  $filesystem
+     * @param  ZipArchive  $ziparchive
+     * @return ZipperContract
+     */
+    protected function createZipper(Filesystem $filesystem = null, ZipArchive $ziparchive = null): ZipperContract
+    {
+        $filesystem = $filesystem ?: Mockery::mock(new Filesystem);
+        $ziparchive = $ziparchive ?: new ZipArchive;
 
-        $this->zipper = new Zipper(
-            $this->filesystem,
-            $this->ziparchive
-        );
+        return new Zipper($filesystem, $ziparchive);
     }
 
     /**
@@ -140,8 +128,9 @@ class ZipperTest extends TestCase
      */
     public function testSuccessfullyInitiated(): void
     {
+        $zipper = $this->createZipper();
         // $this->expectExceptionMessage("Invalid or uninitialized Zip object.");
-        $this->assertInstanceOf(ZipperContract::class, $this->zipper);
+        $this->assertInstanceOf(ZipperContract::class, $zipper);
     }
 
     // /**
@@ -165,7 +154,9 @@ class ZipperTest extends TestCase
      */
     public function testGetCountFilesInArchive(): void
     {
-        $this->assertSame(0, $this->zipper->count());
+        $zipper = $this->createZipper();
+
+        $this->assertSame(0, $zipper->count());
     }
 
     /**
@@ -177,7 +168,9 @@ class ZipperTest extends TestCase
      */
     public function testGetFilenameArchive(): void
     {
-        $this->assertNull($this->zipper->filename());
+        $zipper = $this->createZipper();
+
+        $this->assertNull($zipper->filename());
     }
 
     /**
@@ -200,7 +193,8 @@ class ZipperTest extends TestCase
         );
 
         // Попытаемся открыть несуществующий архив.
-        $ziparchive = $this->zipper->open($filePath);
+        $zipper = $this->createZipper();
+        $ziparchive = $zipper->open($filePath);
     }
 
     /**
@@ -219,7 +213,8 @@ class ZipperTest extends TestCase
         $this->assertFileExists($filePath);
 
         // Попытаемся открыть существующий архив.
-        $ziparchive = $this->zipper->open($filePath);
+        $zipper = $this->createZipper();
+        $ziparchive = $zipper->open($filePath);
 
         // В открытом архиве не должно быть файлов.
         $this->assertSame(0, $ziparchive->count());
@@ -263,7 +258,8 @@ class ZipperTest extends TestCase
         );
 
         // Попытаемся создать архив при существующем файле архива.
-        $ziparchive = $this->zipper->create($filePath);
+        $zipper = $this->createZipper();
+        $ziparchive = $zipper->create($filePath);
     }
 
     /**
@@ -280,7 +276,8 @@ class ZipperTest extends TestCase
         $this->assertFileDoesNotExist($filePath);
 
         // Попытаемся создать новый архив.
-        $ziparchive = $this->zipper->create($filePath);
+        $zipper = $this->createZipper();
+        $ziparchive = $zipper->create($filePath);
 
         // В файловой системе не должно быть доступа к файлу архива.
         // Это снижает вероятность одновременного доступа к нему.
@@ -316,7 +313,8 @@ class ZipperTest extends TestCase
         $this->assertFileDoesNotExist($filePath);
 
         // Попытаемся создать новый архив.
-        $ziparchive = $this->zipper->create($filePath);
+        $zipper = $this->createZipper();
+        $ziparchive = $zipper->create($filePath);
 
         // В файловой системе не должно быть доступа к файлу архива.
         // Это снижает вероятность одновременного доступа к нему.
@@ -356,7 +354,8 @@ class ZipperTest extends TestCase
         $this->assertFileDoesNotExist($filePath);
 
         // Попытаемся создать новый архив.
-        $ziparchive = $this->zipper->create($filePath);
+        $zipper = $this->createZipper();
+        $ziparchive = $zipper->create($filePath);
 
         // В файловой системе не должно быть доступа к файлу архива.
         // Это снижает вероятность одновременного доступа к нему.
@@ -405,7 +404,8 @@ class ZipperTest extends TestCase
         $this->assertFileDoesNotExist($filePath);
 
         // Попытаемся создать новый архив.
-        $ziparchive = $this->zipper->create($filePath);
+        $zipper = $this->createZipper();
+        $ziparchive = $zipper->create($filePath);
 
         // В файловой системе не должно быть доступа к файлу архива.
         // Это снижает вероятность одновременного доступа к нему.
@@ -459,7 +459,8 @@ class ZipperTest extends TestCase
         $this->assertFileDoesNotExist($filePath);
 
         // Попытаемся создать новый архив.
-        $ziparchive = $this->zipper->create($filePath);
+        $zipper = $this->createZipper();
+        $ziparchive = $zipper->create($filePath);
 
         // В файловой системе не должно быть доступа к файлу архива.
         // Это снижает вероятность одновременного доступа к нему.
@@ -502,7 +503,8 @@ class ZipperTest extends TestCase
         $this->assertFileDoesNotExist($filePath);
 
         // Попытаемся создать новый архив.
-        $ziparchive = $this->zipper->create($filePath);
+        $zipper = $this->createZipper();
+        $ziparchive = $zipper->create($filePath);
 
         // В файловой системе не должно быть доступа к файлу архива.
         // Это снижает вероятность одновременного доступа к нему.
@@ -528,7 +530,8 @@ class ZipperTest extends TestCase
         $this->assertFileExists($filePath);
 
         // Попытаемся открыть существующий архив.
-        $ziparchive = $this->zipper->open($filePath);
+        $zipper = $this->createZipper();
+        $ziparchive = $zipper->open($filePath);
 
         // В открытом архиве должен быть 1 файл.
         $this->assertSame(1, $ziparchive->count());
@@ -571,7 +574,8 @@ class ZipperTest extends TestCase
         $this->assertFileDoesNotExist($filePath);
 
         // Попытаемся создать новый архив.
-        $ziparchive = $this->zipper->create($filePath);
+        $zipper = $this->createZipper();
+        $ziparchive = $zipper->create($filePath);
 
         // В файловой системе не должно быть доступа к файлу архива.
         // Это снижает вероятность одновременного доступа к нему.
@@ -601,7 +605,8 @@ class ZipperTest extends TestCase
         $this->assertFileExists($filePath);
 
         // Попытаемся открыть существующий архив.
-        $ziparchive = $this->zipper->open($filePath);
+        $zipper = $this->createZipper();
+        $ziparchive = $zipper->open($filePath);
 
         // В открытом архиве должно быть 2 элемента. А почему?
         $this->assertSame(2, $ziparchive->count());
@@ -645,7 +650,8 @@ class ZipperTest extends TestCase
         $this->assertFileDoesNotExist($filePath);
 
         // Попытаемся создать новый архив.
-        $ziparchive = $this->zipper->create($filePath);
+        $zipper = $this->createZipper();
+        $ziparchive = $zipper->create($filePath);
 
         // В файловой системе не должно быть доступа к файлу архива.
         // Это снижает вероятность одновременного доступа к нему.
@@ -675,7 +681,8 @@ class ZipperTest extends TestCase
         $this->assertFileExists($filePath);
 
         // Попытаемся открыть существующий архив.
-        $ziparchive = $this->zipper->open($filePath);
+        $zipper = $this->createZipper();
+        $ziparchive = $zipper->open($filePath);
 
         // В открытом архиве должно быть 2 элемента. А почему?
         $this->assertSame(2, $ziparchive->count());
@@ -728,7 +735,8 @@ class ZipperTest extends TestCase
         $this->assertFileDoesNotExist($filePath);
 
         // Попытаемся создать новый архив.
-        $ziparchive = $this->zipper->create($filePath);
+        $zipper = $this->createZipper();
+        $ziparchive = $zipper->create($filePath);
 
         // В файловой системе не должно быть доступа к файлу архива.
         // Это снижает вероятность одновременного доступа к нему.
@@ -763,7 +771,8 @@ class ZipperTest extends TestCase
         $this->assertFileExists($filePath);
 
         // Попытаемся открыть существующий архив.
-        $ziparchive = $this->zipper->open($filePath);
+        $zipper = $this->createZipper();
+        $ziparchive = $zipper->open($filePath);
 
         // В открытом архиве должно быть 4 элемента.
         $this->assertSame(count($additionFiles), $ziparchive->count());
