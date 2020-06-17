@@ -18,7 +18,7 @@ class ZipperServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind('zipper', function (Application $app) {
+        $this->app->bind('laravel-zipper', function (Application $app) {
             return new Zipper(
                 $app->make('files'),
                 new ZipArchive

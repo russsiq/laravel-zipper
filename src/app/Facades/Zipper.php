@@ -20,6 +20,6 @@ class Zipper extends Facade
      */
     protected static function getFacadeAccessor(): string
     {
-        return 'zipper';
+        return 'laravel-zipper';
     }
 }
