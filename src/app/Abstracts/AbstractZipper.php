@@ -160,7 +160,7 @@ abstract class AbstractZipper implements ZipperContract, Countable
         $directories = $this->filesystem->directories($destination);
 
         if (1 === count($directories)) {
-            $root = $directories[0];
+            $root = current($directories);
 
             collect($this->filesystem->directories($root))
                 ->each(function (string $directory) use ($destination) {
