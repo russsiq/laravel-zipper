@@ -27,7 +27,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Russsiq\\Zipper\\": "src/app/"
+            "Russsiq\\Zipper\\": "src/"
         }
     },
     "extra": {
