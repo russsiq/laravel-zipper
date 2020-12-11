@@ -1,6 +1,6 @@
 {
     "name": "russsiq/laravel-zipper",
-    "description": "Класс-обертка для архиватора ZipArchive в Laravel 7.x.",
+    "description": "Класс-обертка для архиватора ZipArchive в Laravel 8.x.",
     "keywords": ["laravel", "zipper", "zip-archive", "zip-wrapper"],
     "type": "library",
     "license": "MIT",
