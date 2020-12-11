@@ -15,14 +15,14 @@
 
     ```json
     "require": {
-        "russsiq/laravel-zipper": "^0.1"
+        "russsiq/laravel-zipper": "^0.2"
     }
     ```
 
  - **2** Для подключения в уже созданный проект воспользуйтесь командной строкой:
 
     ```console
-    composer require "russsiq/laravel-zipper:^0.1"
+    composer require "russsiq/laravel-zipper:^0.2"
     ```
 
  - **3** Если в вашем приложении включен отказ от обнаружения пакетов в директиве `dont-discover` в разделе `extra` файла `composer.json`, то необходимо самостоятельно добавить в файле `config/app.php`:
