@@ -1,6 +1,6 @@
 {
     "name": "russsiq/laravel-zipper",
-    "description": "Класс-обертка для архиватора ZipArchive в Laravel 8.x.",
+    "description": "Класс-обертка для архиватора ZipArchive в Laravel 9.x.",
     "keywords": ["laravel", "zipper", "zip-archive", "zip-wrapper"],
     "type": "library",
     "license": "MIT",
@@ -16,14 +16,14 @@
         "role": "Developer"
     }],
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "8.1.*",
         "ext-zip": "*",
-        "illuminate/support": "8.*",
-        "illuminate/filesystem": "8.*"
+        "illuminate/support": "9.*",
+        "illuminate/filesystem": "9.*"
     },
     "require-dev": {
-        "mockery/mockery": "^1.4",
-        "phpunit/phpunit": "^9.5"
+        "mockery/mockery": "^1.5.0",
+        "phpunit/phpunit": "^9.5.20"
     },
     "autoload": {
         "psr-4": {
@@ -42,8 +42,7 @@
     },
     "scripts": {
         "test": "vendor/bin/phpunit",
-        "test-win7": "vendor\\bin\\phpunit",
-        "testdox": "vendor\\bin\\phpunit --testdox-html tests/testdox.html"
+        "testdox": "vendor/bin/phpunit --testdox-html tests/testdox.html"
     },
     "minimum-stability": "dev",
     "prefer-stable": true
